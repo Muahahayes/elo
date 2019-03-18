@@ -1,0 +1,55 @@
+**ELO tracking database**
+MySQL handles data
+PHP handles queries, json and html
+JS handles modals
+Bulma + Bootstrap for css
+
+
+__MySQL__
+Players table: 
+Name,Tag,ELO
+
+Sets table: WinnersFK,LosersFK,WinGames,LossGames
+
+
+__PHP__
+Main Page  __DONE__
+Table of players with Name, Tag, ELO, and button to open modal of match history (js calls a php for json with query string saying player id, populates modal, and displays it)
+Render table in PHP
+Order by ELO
+
+Page to render json of player match history. __DONE__
+Query db for all Players join Sets on WinnersFK=id, return players.name matching each sets LosersFK. Put each row (of just a player name) to a Win array.
+Same for all sets LosersFK matching player's id. To a Loss array.
+Push both arrays to Matches array
+Json encode Matches and echo.
+
+Page to insert sets   _DONE_
+4 text boxes and submit button in a form
+[Query db for all player names from players
+First 2 boxes have drop down of names] // Maybe later
+2 boxes for names, 2 for set results
+Submit a GET back to this page with names and results
+Query for both players ELO scores
+  Do ELO formula for the two players
+Query ALTER to update the two players ELO
+
+OPTIONAL
+Check time since last update and depreciate score by ? per month
+Check how many sets for that player, scale K based on sets (up to 20 sets)
+
+__JS__  __DONE__
+On ready give all modal buttons the matchModal func as on click
+
+matchModal()  __DONE__
+Ajax json.php with player id as query string
+Use json to populate modal data
+  Loop through Win array (matches[0])
+  Check winNames array if this name matches an existing name. If yes, add 1 to that name.wins if no create new object with this name and push to winNames.
+  Same for Loss array and lossNames
+  Loop through winNames and list the name and wins of each.
+  Same for Loss array and lossNames.
+  Make Ratio array full of objects {name,wins,losses}
+  Loop through both arrays to populate Ratio
+  Loop through Ratio adding info to string
+  Put this string in the modal html
